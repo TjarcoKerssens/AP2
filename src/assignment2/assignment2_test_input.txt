@@ -1,0 +1,57 @@
+/ This is the test input for the second exercise of the practical Advanced Programming
+/ A complete program may only be submitted on PracTool if this file can be correctly parsed
+/
+/ START TESTINPUT
+/ Does the program error on an empty line?
+
+/ A few simple operator tests
+Alfa = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+? Alfa
+Bravo = {1, 3, 5, 7, 9, 1234567890, 13, 15, 17, 98765432100 }
+/ Are spaces ignored?
+?          Bravo
+? Alfa + Bravo
+? Alfa * Bravo
+? Alfa - Bravo
+? Alfa | Bravo
+/ Check whether priorities are right
+? {1, 2, 3} + {4, 5, 6}*{3, 4  }
+? {1, 2, 3} + {4, 5} | {2, 3, 4} 
+/ The next statement should be an error
+Alfa = (({1, 2, 3})
+/ Is Alfa still {1..9} ?
+?Alfa
+/ Nasty check; is '/' handled properly?
+Charlie = {12, 345, 65, 67, 5, 435, 879, 90, 867} / This '/' should not be here!
++ {1, 45, 12, 342, 546}
+/ The two lines above should not have been processed as if they read
+/ "Charlie = {12, 345, 65, 67, 5, 435, 879, 90, 867} + {1, 45, 12, 342, 546}"
+/ So Charlie should be undefined
+? Charlie
+/ The next line contains two assignments, and is not a statement accordint to the syntax
+Alfa = {1, 10, 100, 1000}          Delta = {3, 4}
+/ Alfa should still be {1..9}
+? Alfa
+Bravo = Alfa
+Alfa = {1, 2, 5}     
+/ Although Alfa has been changed, Bravo should be unmodified
+/ Is Bravo still {1..9}?
+? Bravo
+? {}
+Delta = Alfa        + Alfa + {     }*Bravo*(Alfa + Bravo)
+/ Delta is now equal to Alfa
+?Delta
+Delta = Delta
+/Is Delta unmodified?
+?                          Delta
+X = ((({1, 2, 3} + {4, 5, 6} * {4, 5})) * ({2, 3}))
+     /X now contains {2, 3}
+? X
+/ Can the operators handle empty sets?
+? { } * {}
+? {}  | {}
+/ Be careful! these are not the last 2 lines
+/ There are 3 other lines under this one => 3 errors when processing.
+
+          
+
