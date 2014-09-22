@@ -4,7 +4,7 @@ package assignment2;
  * An interface for the Identifier class which will model the identifiers
  * present in the set
  * 
- * @author Cees Schouten
+ * @author Tjarco Kerssens
  * @elements Characters
  * @structure Linear
  * @domain All alphanumeric characters, non empty identifiers starting with a

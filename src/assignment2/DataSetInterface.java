@@ -8,10 +8,9 @@ package assignment2;
  * @domain Any Object which implements the Data interface
  * @structure none
  * 
- * @param <E>
- *            The type to be hold in this set
+ * @param <E> The type to be hold in this set
  * 
- * @constructor DataSetInterface<E>(); <dd><b>precondition</b> - <dd>
+ * @constructor DataSet<E>(); <dd><b>precondition</b> - <dd>
  *              <b>postcondition</b> A default empty set is created for type E
  */
 public interface DataSetInterface<E extends Data> extends Clonable {
