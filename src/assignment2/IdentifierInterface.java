@@ -12,18 +12,18 @@ package assignment2;
  * @constructor Identifier(char character); <dt><b>PRE-condition</b>
  *              <dd>-
  *              <dt><b>POST-condition</b>
- *              <dd>The Identifier is created and initialized with the
- *              firstcharacter
+ *              <dd>The Identifier is created and initialized with the first
+ *              character
  *              <dt><b>throws</b>
- *              <dd>IlegalFormatException if the character is not alphabetic
+ *              <dd>APException if the character is not alphabetic
  */
 
-public interface IdentifierInterface {
+public interface IdentifierInterface extends Data {
 
 	/**
 	 * Initialization of data input
 	 * 
-	 * @throws IllegalFormatException
+	 * @throws APException
 	 *             if the character is not a letter
 	 * @precondition -
 	 * @postcondition The identifier is reset to it's default state
@@ -92,10 +92,24 @@ public interface IdentifierInterface {
 	 * 
 	 * @param identifier
 	 * 
-	 * @precondition Array is not null
+	 * @precondition identifier is not null
 	 * @postcondition true: This identifier is the same as the parameter's
 	 *                identifier false: This identifier is not the same as the
 	 *                parameter's identifier
 	 */
-	boolean compareTo(IdentifierInterface identifier);
+	boolean equals(IdentifierInterface identifier);
+
+	/**
+	 * Compare this identifier with another.
+	 * 
+	 * @return the difference between the identifiers
+	 * 
+	 * @precondition the identifier is not null
+	 * @postcondition return<br>
+	 *                <i>less than 0</i> if this identifier is before the
+	 *                identifier<br>
+	 *                <i>0</i> if this identifier is the same <i>more than 0
+	 *                </i> if this identifier is larger
+	 */
+	int compareTo(IdentifierInterface identifier);
 }
