@@ -34,7 +34,7 @@ public interface NaturalNumberInterface extends Data {
 	 *                digits
 	 * 
 	 */
-	boolean init(char... digit);
+	boolean init(char digit);
 
 	/**
 	 * Adds a new digit to the NaturalNumber
