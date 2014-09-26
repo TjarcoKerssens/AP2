@@ -1,11 +1,11 @@
 package assignment2;
 
 public class List<E extends Data> implements ListInterface<E> {
-	private Node<E> list;
+	protected Node<E> list;
 
 	@Override
 	public boolean isEmpty() {
-		return list.next == null;
+		return list == null;
 	}
 
 	@Override
