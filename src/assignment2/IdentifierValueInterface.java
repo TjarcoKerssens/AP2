@@ -2,16 +2,16 @@ package assignment2;
 
 /**
  * @author Cees Schouten
- * @elements Identifier and DataSet objects
- * @domain Any Identifier and DataSet
+ * @elements Objects
+ * @domain Two Objects which form a relation
  * @structure none
- * @constructor IdentifierValue(IdentifierInterface identifier,
- *              DataSetInterface<?> data);
+ * @constructor IdentifierValue(I identifier,
+ *              D data);
  * @precondition: -
- * @postcondition: Default empty identifier and dataset are created
+ * @postcondition: The Objects are linked via a new instance of IdentifierValue
  */
 
-public interface IdentifierValueInterface extends Data {
+public interface IdentifierValueInterface<I, D> extends Data {
 
 	/**
 	 * Initialize identifier and dataset
@@ -20,7 +20,7 @@ public interface IdentifierValueInterface extends Data {
 	 * @postcondition Initial identifier and dataset are created
 	 */
 
-	void init(IdentifierInterface identifier, DataSetInterface<?> data);
+	void init(I identifier, D data);
 
 	/**
 	 * Return an identifier from the dataset
@@ -29,7 +29,7 @@ public interface IdentifierValueInterface extends Data {
 	 * @precondition -
 	 * @postcondition A copy of an identifier is returned
 	 */
-	IdentifierInterface getIdentifier();
+	I getIdentifier();
 
 	/**
 	 * Assign an identifier to the dataset
@@ -38,20 +38,20 @@ public interface IdentifierValueInterface extends Data {
 	 * @precondition -
 	 * @postcondition Identifier is assigned to the dataset
 	 */
-	void setIdentifier(IdentifierInterface identifier);
+	void setIdentifier(I identifier);
 
 	/**
 	 * @return A copy of this dataset is returned
 	 * @precondition -
 	 * @postcondition A copy of this dataset is returned
 	 */
-	DataSetInterface<?> getDataset();
+	D getData();
 
 	/**
 	 * @param dataSet
 	 * @precondition -
 	 * @postcondition The dataset is set to this dataset
 	 */
-	void setDataset(DataSetInterface<?> dataSet);
+	void setData(D dataSet);
 
 }

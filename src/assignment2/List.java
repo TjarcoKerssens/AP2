@@ -67,9 +67,8 @@ public class List<E extends Data> implements ListInterface<E> {
 			list = list.prior;
 			list.next = null;
 		} else {
-			list.prior.next = list.next;
 			list.next.prior = list.prior;
-			list = list.next;
+			list = list.prior.next = list.next;
 		}
 		return this;
 	}

@@ -5,18 +5,18 @@ package assignment2;
  * A table which links the Identifiers to the Datasets
  * 
  * @author Tjarco Kerssens
- * @elements Identfiers and DataSets
- * @structure linear
- * @domain Identifiers and DataSet objects
+ * @elements Objects
+ * @structure none
+ * @domain Objects which form a relation
  * 
  * @constructor DataTable(); 
  * 			<dd><b>precondition</b><dt>-
  * 			<dd><b>postcondition</b><dt>A new empty DataTable is created. 
  */
-public interface DataTableInterface {
+public interface DataTableInterface<I, D> {
 
 	/**
-	 * Stores the Identifier and the DataSet in the table. The data can later be
+	 * Stores the Identifier and the Data in the table. The data can later be
 	 * retrieved by using the identifier.
 	 * 
 	 * @param identifier
@@ -26,15 +26,15 @@ public interface DataTableInterface {
 	 *                together.
 	 * 
 	 */
-	void store(IdentifierInterface identifier, DataSetInterface<?> data);
+	void store(I identifier, D data);
 
 	/**
-	 * Lookup a DataSet by providing the identifier it is linked to. 
+	 * Lookup data by providing the identifier it is linked to. 
 	 * 
 	 * @param identifier
 	 * @precondition The identifier is not null
 	 * @postcondition return the DataSet which is linked to the given identifier. If
 	 * 				no DataSet could be found, returns null. 
 	 */
-	DataSetInterface<?> lookUp(IdentifierInterface identifier);
+	D lookUp(I identifier) throws APException;
 }
