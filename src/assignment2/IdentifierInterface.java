@@ -85,31 +85,4 @@ public interface IdentifierInterface extends Data {
 	 * @postcondition All characters of the identifier are returned
 	 */
 	char[] getAllCharacters();
-
-	/**
-	 * Compare two identifiers and return true if they are the same, false
-	 * otherwise
-	 * 
-	 * @param identifier
-	 * 
-	 * @precondition identifier is not null
-	 * @postcondition true: This identifier is the same as the parameter's
-	 *                identifier false: This identifier is not the same as the
-	 *                parameter's identifier
-	 */
-	boolean equals(IdentifierInterface identifier);
-
-	/**
-	 * Compare this identifier with another.
-	 * 
-	 * @return the difference between the identifiers
-	 * 
-	 * @precondition the identifier is not null
-	 * @postcondition return<br>
-	 *                <i>less than 0</i> if this identifier is before the
-	 *                identifier<br>
-	 *                <i>0</i> if this identifier is the same <i>more than 0
-	 *                </i> if this identifier is larger
-	 */
-	int compareTo(IdentifierInterface identifier);
 }

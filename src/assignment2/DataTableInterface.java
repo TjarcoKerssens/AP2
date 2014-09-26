@@ -13,7 +13,7 @@ package assignment2;
  * 			<dd><b>precondition</b><dt>-
  * 			<dd><b>postcondition</b><dt>A new empty DataTable is created. 
  */
-public interface DataTableInterface<I, D> {
+public interface DataTableInterface<I extends Data, D extends Clonable> {
 
 	/**
 	 * Stores the Identifier and the Data in the table. The data can later be

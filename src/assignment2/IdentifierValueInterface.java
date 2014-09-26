@@ -11,7 +11,7 @@ package assignment2;
  * @postcondition: The Objects are linked via a new instance of IdentifierValue
  */
 
-public interface IdentifierValueInterface<I, D> extends Data {
+public interface IdentifierValueInterface<I extends Data, D extends Clonable> extends Data {
 
 	/**
 	 * Initialize identifier and dataset
