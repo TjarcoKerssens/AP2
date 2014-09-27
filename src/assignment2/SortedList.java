@@ -32,13 +32,37 @@ public class SortedList<E extends Data> extends List<E> implements
 	}
 
 	public void insertLast(E d) {
-		this.list = new Node<E>(d, this.list.prior, null);
+		this.list = new Node<E>(d, this.list, null);
 		this.list.prior.next = this.list;
 	}
 
 	public void insertInOrder(E d) {
-		this.list = new Node<E>(d, this.list.prior, this.list.next);
+		this.list = new Node<E>(d, this.list, this.list.next);
 		this.list.prior.next = this.list;
 		this.list.next.prior = this.list;
+	}
+	
+	public boolean find(E d) {
+		if (d.compareTo(list.data) == 0) {
+			return true;
+		}
+		else if (d.compareTo(this.list.data) < 0) {
+			while (list.next != null) {
+				this.list = this.list.next;
+				
+				if (d.compareTo(this.list.data) == 0) {
+					return true;
+				}
+			}
+		} else {
+			while (list.prior != null) {
+				this.list = this.list.prior;
+				
+				if (d.compareTo(this.list.data) == 0) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
