@@ -6,18 +6,24 @@ public class SortedList<E extends Data> extends List<E> implements
 	@Override
 	public List<E> insert(E d) {
 
-		if (this.isEmpty() == true) {
-			this.insert(d);
+		if (this.isEmpty()) {
+			super.insert(d);
 		} else {
 			this.setFirst();
 
-			while (d.compareTo(this.list.data) < 0) {
-				this.list = this.list.next;
+			// New item is the smallest item so far
+			if (list.data.compareTo(d) > 0) {
+				insertFirst(d);
+				return this;
 			}
 
-			if (this.list.prior == null) {
-				insertFirst(d);
-			} else if (this.list.next == null) {
+			// Find the item where the new item should be placed after
+			while (list.next != null && list.next.data.compareTo(d) < 0) {
+				list = list.next;
+			}
+
+			if (this.list.next == null) {
+				// New item is the largest so far
 				insertLast(d);
 			} else {
 				insertInOrder(d);
@@ -27,29 +33,25 @@ public class SortedList<E extends Data> extends List<E> implements
 	}
 
 	public void insertFirst(E d) {
-		this.list = new Node<E>(d, null, this.list);
-		this.list.next.prior = this.list;
+		list = list.prior = new Node<E>(d, null, list);
 	}
 
 	public void insertLast(E d) {
-		this.list = new Node<E>(d, this.list, null);
-		this.list.prior.next = this.list;
+		list = list.next = new Node<E>(d, list, null);
 	}
 
 	public void insertInOrder(E d) {
-		this.list = new Node<E>(d, this.list, this.list.next);
-		this.list.prior.next = this.list;
-		this.list.next.prior = this.list;
+		list = list.next = list.next.prior = new Node<E>(d, list,
+				list.next);
 	}
-	
+
 	public boolean find(E d) {
 		if (d.compareTo(list.data) == 0) {
 			return true;
-		}
-		else if (d.compareTo(this.list.data) < 0) {
+		} else if (d.compareTo(this.list.data) < 0) {
 			while (list.next != null) {
 				this.list = this.list.next;
-				
+
 				if (d.compareTo(this.list.data) == 0) {
 					return true;
 				}
@@ -57,7 +59,7 @@ public class SortedList<E extends Data> extends List<E> implements
 		} else {
 			while (list.prior != null) {
 				this.list = this.list.prior;
-				
+
 				if (d.compareTo(this.list.data) == 0) {
 					return true;
 				}
