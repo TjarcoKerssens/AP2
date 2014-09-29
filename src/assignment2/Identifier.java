@@ -75,23 +75,31 @@ public class Identifier implements IdentifierInterface {
 		
 		try {
 			clone = new Identifier(this.getCharacter(0));
-		} catch (APException e) {
-			e.printStackTrace();
-		}
+		} catch (APException e) {}
 		
 		for(int i = 1; i < this.getLenght() -1; i++) {
 			try {
 				clone.addCharacter(this.getCharacter(i));
-			} catch (APException e) {
-				e.printStackTrace();
-			}
+			} catch (APException e) {}
 		}
 		return clone;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		return characterSet.toString().compareTo((String) o);
+		
+		Identifier compare = ((Identifier)o);
+		
+		if (compare.nextIndex != this.nextIndex) {
+			return 1;
+		}
+		
+		for(int i = 0; i < this.nextIndex; i++) {
+			if (!(compare.getCharacter(i) == this.getCharacter(i))) {
+				return compare.getCharacter(i) - this.getCharacter(i);
+			}
+		}
+		return 0;
 	}
 
 }
