@@ -58,20 +58,30 @@ public class NaturalNumber implements NaturalNumberInterface {
 	
 	@Override
 	public int compareTo(Object o) {
-		return naturalNumber.toString().compareTo((String) o);	
+		
+		NaturalNumber compare = ((NaturalNumber)o);
+		
+		if(compare.nextIndex != this.nextIndex) {
+			return 1; // of compare.nextIndex - this.nextIndex
+		}
+			for (int i = 0; i < this.nextIndex; i++) {
+			try {
+				if (!(compare.getDigitAt(i) == this.getDigitAt(i))) {
+					return compare.getDigitAt(i) - this.getDigitAt(i);
+				}
+			} catch (APException e) {}
+		}
+		return 0;
 	}
 	
 	public NaturalNumber clone() {
 		
 		NaturalNumber clone = new NaturalNumber();
 		
-		for(int i = 0; i < this.getAllDigits().length - 1; i++) {
+		for(int i = 0; i < this.nextIndex; i++) {
 			try {
 				clone.addDigit(this.getDigitAt(i));
-			} catch (APException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} catch (APException e) {}
 		}
 		return clone;
 	}
