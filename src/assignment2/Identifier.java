@@ -1,11 +1,10 @@
 package assignment2;
 
-
 public class Identifier implements IdentifierInterface {
-	
-	private char[]characterSet;
+
+	private char[] characterSet;
 	private int nextIndex;
-	
+
 	public Identifier(char character) throws APException {
 		init(character);
 	}
@@ -34,7 +33,8 @@ public class Identifier implements IdentifierInterface {
 			characterSet[nextIndex] = character;
 			nextIndex++;
 		} else {
-			throw new APException("Character '" + character	+ "' is not Alphanummeric");
+			throw new APException("Character '" + character
+					+ "' is not Alphanummeric");
 		}
 	}
 
@@ -68,33 +68,35 @@ public class Identifier implements IdentifierInterface {
 	private boolean isAlhpabetic(char character) {
 		return Character.isLetter(character);
 	}
-	
+
 	public Identifier clone() {
-		
+
 		Identifier clone = null;
-		
+
 		try {
 			clone = new Identifier(this.getCharacter(0));
-		} catch (APException e) {}
-		
-		for(int i = 1; i < this.getLenght() -1; i++) {
+		} catch (APException e) {
+		}
+
+		for (int i = 1; i < this.getLenght() - 1; i++) {
 			try {
 				clone.addCharacter(this.getCharacter(i));
-			} catch (APException e) {}
+			} catch (APException e) {
+			}
 		}
 		return clone;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		
-		Identifier compare = ((Identifier)o);
-		
+
+		Identifier compare = ((Identifier) o);
+
 		if (compare.nextIndex != this.nextIndex) {
-			return 1;
+			return this.nextIndex - compare.nextIndex;
 		}
-		
-		for(int i = 0; i < this.nextIndex; i++) {
+
+		for (int i = 0; i < this.nextIndex; i++) {
 			if (!(compare.getCharacter(i) == this.getCharacter(i))) {
 				return compare.getCharacter(i) - this.getCharacter(i);
 			}

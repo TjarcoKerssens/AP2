@@ -26,6 +26,7 @@ public interface NaturalNumberInterface extends Data {
 	 * 
 	 * @param digit
 	 *            The character wich represents the digit
+	 * @throws APException 
 	 * @precondition all characters are digits
 	 * @postcondition The NaturalNumber is initialized with the digit
 	 *                given.<br>
@@ -33,7 +34,7 @@ public interface NaturalNumberInterface extends Data {
 	 *                return false if the character is not a digit
 	 * 
 	 */
-	boolean init(char digit);
+	boolean init(char digit) throws APException;
 
 	/**
 	 * Adds a new digit to the NaturalNumber
