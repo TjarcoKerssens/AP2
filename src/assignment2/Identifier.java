@@ -40,7 +40,10 @@ public class Identifier implements IdentifierInterface {
 
 	@Override
 	public boolean removeCharacter(int index) {
-		for (int i = index; i < characterSet.length - 1; i++) {
+		if (index > nextIndex -1 ) {
+			return false;
+		}
+		for (int i = index; i < nextIndex; i++) {
 			characterSet[i] = characterSet[i + 1];
 		}
 		return true;

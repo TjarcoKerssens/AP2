@@ -1,7 +1,7 @@
 package assignment2;
 
 public class NaturalNumber implements NaturalNumberInterface {
-
+	
 	private char[] naturalNumber;
 	private int nextIndex;
 
