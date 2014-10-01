@@ -10,7 +10,7 @@ public class Main {
 		in.useDelimiter("");
 		while (in.hasNextLine()) {
 			try {
-				readRow(in);
+				readStatement(in);
 			} catch (APException e) {
 				e.printStackTrace();
 			}
@@ -33,26 +33,26 @@ public class Main {
 	boolean nextCharIsAdditiveOperator(Scanner in) {
 		return in.hasNext(Pattern.compile("[+-//|]"));
 	}
-	
-	boolean nextCharIsMultiplicativeOperator(Scanner in){
+
+	boolean nextCharIsMultiplicativeOperator(Scanner in) {
 		return in.hasNext(Pattern.quote("*"));
 	}
-	
-	void trimSpace(Scanner in){
-		while(nextCharIs(in, ' ')){
+
+	void trimSpace(Scanner in) {
+		while (nextCharIs(in, ' ')) {
 			in.next();
 		}
 	}
 
-	void character(Scanner in, char c) throws APException {
+	char character(Scanner in, char c) throws APException {
 		if (!nextCharIs(in, c)) {
 			throw new APException("");
 		}
 
-		in.next();
+		return in.next().charAt(0);
 	}
 
-	void readRow(Scanner in) throws APException {
+	void readStatement(Scanner in) throws APException {
 		if (nextCharIsLetter(in)) {
 			readAssignment(in);
 		} else if (nextCharIs(in, '?')) {
@@ -62,10 +62,6 @@ public class Main {
 		} else {
 			throw new APException("Invallid start of row");
 		}
-
-	}
-
-	void readStatement(Scanner in) {
 
 	}
 
@@ -82,8 +78,8 @@ public class Main {
 
 	}
 
-	void readIdentifier(Scanner in) {
-
+	Identifier readIdentifier(Scanner in) {
+		return null;
 	}
 
 	void readExpression(Scanner in) throws APException {
@@ -105,7 +101,7 @@ public class Main {
 			readIdentifier(in);
 		} else if (nextCharIs(in, '(')) {
 			in.next();
-			readExpression(in); //readComplexFactor()
+			readExpression(in); // readComplexFactor()
 			character(in, ')');
 		} else if (nextCharIs(in, '{')) {
 			readSet(in);
@@ -120,7 +116,7 @@ public class Main {
 	}
 
 	void readNumber(Scanner in) throws APException {
-		while (!nextCharIs(in, ' ')) {//Zolang er nog een cijfer is.
+		while (!nextCharIs(in, ' ')) {// Zolang er nog een cijfer is.
 			readDigit(in);
 		}
 	}
@@ -134,7 +130,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		System.out.println("*".matches("[+-//|]") ? "succes" : "fail");
-		//new Main().run();
+
+		// new Main().run();
 	}
 
 }
