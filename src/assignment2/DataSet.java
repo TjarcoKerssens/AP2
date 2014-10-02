@@ -44,16 +44,15 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 	}
 	
 	public  DataSet<E> clone() {
+		
 		DataSet<E> clone = new DataSet<E>();
-		SortedList<E> temp = dataSet;
+		this.dataSet.setFirst();
+		Node<E> list = this.dataSet.list;
 		
-		while (!this.dataSet.isEmpty()) {
-			E element = this.getElement();
-			
-			clone.addElement(element);
-			this.removeElement(element);
+		for (int i = 0; i < this.dataSet.size(); i++) {
+			clone.dataSet.insert(list.data);
+			list = list.next;
 		}
-		
 		return clone;
 	}
 
