@@ -45,6 +45,7 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 	
 	public  DataSet<E> clone() {
 		DataSet<E> clone = new DataSet<E>();
+		SortedList<E> temp = dataSet;
 		
 		while (!this.dataSet.isEmpty()) {
 			E element = this.getElement();

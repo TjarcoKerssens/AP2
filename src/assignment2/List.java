@@ -60,7 +60,9 @@ public class List<E extends Data> implements ListInterface<E> {
 
 	@Override
 	public List<E> remove() {
-		if (list.prior == null) {
+		if (list.prior == null && list.next == null) {
+			list = null;
+		} else if (list.prior == null) {
 			list = list.next;
 			list.prior = null;
 		} else if (list.next == null) {

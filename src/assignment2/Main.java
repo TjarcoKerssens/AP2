@@ -1,20 +1,29 @@
 package assignment2;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
 	DataTable<Identifier, DataSet<NaturalNumber>> table;
 
-	void run() {
-		Scanner in = new Scanner(System.in);
-		in.useDelimiter("");
-		while (in.hasNextLine()) {
-			try {
-				readStatement(in);
-			} catch (APException e) {
-				e.printStackTrace();
+	void run(String path) {
+		table = new DataTable<>();
+		File f = new File(path);
+		Scanner in;
+		try {
+			in = new Scanner(f);
+			in.useDelimiter("");
+			while (in.hasNextLine()) {
+				try {
+					readStatement(in);
+				} catch (APException e) {
+					e.printStackTrace();
+				}
 			}
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
 		}
 	}
 
@@ -40,7 +49,7 @@ public class Main {
 	}
 
 	void trimSpace(Scanner in) {
-		while (nextCharIs(in, ' ')) {
+		while (in.hasNext("\\s")) {
 			in.next();
 		}
 	}
@@ -54,6 +63,7 @@ public class Main {
 	}
 
 	void readStatement(Scanner in) throws APException {
+		trimSpace(in);
 		if (nextCharIsLetter(in)) {
 			readAssignment(in);
 		} else if (nextCharIs(in, '?')) {
@@ -61,87 +71,118 @@ public class Main {
 		} else if (nextCharIs(in, '/')) {
 			procesComment(in);
 		} else {
-			throw new APException("Invallid start of row");
+			throw new APException(in.next());
 		}
 
 	}
 
 	void readAssignment(Scanner in) throws APException {
 		Identifier identifier = readIdentifier(in);
+		trimSpace(in);
+		character(in, '=');
+		trimSpace(in);
 		DataSet<NaturalNumber> set = readExpression(in);
 		table.store(identifier, set);
 	}
 
-	void readPrintStatement(Scanner in) {
-
+	void readPrintStatement(Scanner in) throws APException {
+		character(in, '?');
+		trimSpace(in);
+		DataSet<NaturalNumber> data = readExpression(in);
+		System.out.print("{");
+		while (!data.isEmpty()) {
+			NaturalNumber number = data.getElement();
+			char[] digits = number.getAllDigits();
+			for (char c : digits) {
+				System.out.print(c);
+			}
+			data.removeElement(number);
+			if (!data.isEmpty())
+				System.out.print(", ");
+		}
+		System.out.println("}");
 	}
 
 	void procesComment(Scanner in) {
-
+		in.nextLine();
 	}
 
-	Identifier readIdentifier(Scanner in) {
-		return null;
+	Identifier readIdentifier(Scanner in) throws APException {
+		Identifier identifier = new Identifier(in.next().charAt(0));
+		while (nextCharIsLetter(in)) {
+			identifier.addCharacter(in.next().charAt(0));
+		}
+
+		return identifier;
 	}
 
 	DataSet<NaturalNumber> readExpression(Scanner in) throws APException {
-		readTerm(in);
+		DataSet<NaturalNumber> set = readTerm(in);
 		while (nextCharIsAdditiveOperator(in)) {
 			readTerm(in);
 		}
-		return null;
+		return set;
 	}
 
-	DataSet<?> readTerm(Scanner in) throws APException {
-		readFactor(in);
+	DataSet<NaturalNumber> readTerm(Scanner in) throws APException {
+		DataSet<NaturalNumber> set = readFactor(in);
+
 		while (nextCharIsMultiplicativeOperator(in)) {
 			readFactor(in);
 		}
-		return null;
+		return set;
 	}
 
-	DataSet<?> readFactor(Scanner in) throws APException {
+	DataSet<NaturalNumber> readFactor(Scanner in) throws APException {
+		DataSet<NaturalNumber> set = null;
 		if (nextCharIsLetter(in)) {
-			readIdentifier(in);
+			Identifier id = readIdentifier(in);
+			set = table.lookUp(id);
 		} else if (nextCharIs(in, '(')) {
 			in.next();
-			readExpression(in); // readComplexFactor()
+			set = readExpression(in); // readComplexFactor()
 			character(in, ')');
 		} else if (nextCharIs(in, '{')) {
-			readSet(in);
+			set = readSet(in);
 		}
-		return null;
+		return set;
 	}
 
-	DataSet<?> readSet(Scanner in) throws APException {
+	DataSet<NaturalNumber> readSet(Scanner in) throws APException {
 		character(in, '{');
+		DataSet<NaturalNumber> set = new DataSet<>();
 		while (!nextCharIs(in, '}')) {
-			readNumber(in);
+			set.addElement(readNumber(in));
 		}
-		return null;
+		character(in, '}');
+		return set;
 	}
 
 	NaturalNumber readNumber(Scanner in) throws APException {
 		trimSpace(in);
 		NaturalNumber n = new NaturalNumber();
-		while (!nextCharIs(in, ' ') && !nextCharIs(in, '}')) {// Zolang er nog
-																// een cijfer
-																// is.
+		// As long as there is a digit left
+		while (nextCharIsDigit(in)) {
 			n.addDigit(readDigit(in));
 		}
-		return null;
+		trimSpace(in);
+		if (!nextCharIs(in, '}')) {
+			character(in, ',');
+		}
+		return n;
 	}
 
 	char readDigit(Scanner in) throws APException {
 		if (!nextCharIsDigit(in)) {
-			throw new APException("not a digit");
+			throw new APException("not a digit: " + in.next().charAt(0));
 		}
 		return in.next().charAt(0);
 	}
 
 	public static void main(String[] args) {
+		String path = args[0];
+		new Main().run(path);
 
-		// new Main().run();
 	}
 
 }

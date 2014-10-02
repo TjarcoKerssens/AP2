@@ -81,13 +81,22 @@ public class Identifier implements IdentifierInterface {
 		} catch (APException e) {
 		}
 
-		for (int i = 1; i < this.getLenght() - 1; i++) {
+		for (int i = 1; i < this.getLenght(); i++) {
 			try {
 				clone.addCharacter(this.getCharacter(i));
 			} catch (APException e) {
 			}
 		}
 		return clone;
+	}
+	
+	@Override
+	public String toString() {
+		String s = "";
+		for(char c : characterSet){
+			s += c;
+		}
+		return s;
 	}
 
 	@Override
