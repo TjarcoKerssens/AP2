@@ -101,7 +101,7 @@ public class Identifier implements IdentifierInterface {
 
 		for (int i = 0; i < this.nextIndex; i++) {
 			if (!(compare.getCharacter(i) == this.getCharacter(i))) {
-				return compare.getCharacter(i) - this.getCharacter(i);
+				return this.getCharacter(i) - compare.getCharacter(i);
 			}
 		}
 		return 0;

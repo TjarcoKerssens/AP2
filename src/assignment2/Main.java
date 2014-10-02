@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
+	DataTable<Identifier, DataSet<NaturalNumber>> table;
 
 	void run() {
 		Scanner in = new Scanner(System.in);
@@ -66,8 +67,9 @@ public class Main {
 	}
 
 	void readAssignment(Scanner in) throws APException {
-		readIdentifier(in);
-		readExpression(in);
+		Identifier identifier = readIdentifier(in);
+		DataSet<NaturalNumber> set = readExpression(in);
+		table.store(identifier, set);
 	}
 
 	void readPrintStatement(Scanner in) {
@@ -82,21 +84,23 @@ public class Main {
 		return null;
 	}
 
-	void readExpression(Scanner in) throws APException {
+	DataSet<NaturalNumber> readExpression(Scanner in) throws APException {
 		readTerm(in);
 		while (nextCharIsAdditiveOperator(in)) {
 			readTerm(in);
 		}
+		return null;
 	}
 
-	void readTerm(Scanner in) throws APException {
+	DataSet<?> readTerm(Scanner in) throws APException {
 		readFactor(in);
 		while (nextCharIsMultiplicativeOperator(in)) {
 			readFactor(in);
 		}
+		return null;
 	}
 
-	void readFactor(Scanner in) throws APException {
+	DataSet<?> readFactor(Scanner in) throws APException {
 		if (nextCharIsLetter(in)) {
 			readIdentifier(in);
 		} else if (nextCharIs(in, '(')) {
@@ -106,19 +110,26 @@ public class Main {
 		} else if (nextCharIs(in, '{')) {
 			readSet(in);
 		}
+		return null;
 	}
 
-	void readSet(Scanner in) throws APException {
+	DataSet<?> readSet(Scanner in) throws APException {
 		character(in, '{');
 		while (!nextCharIs(in, '}')) {
 			readNumber(in);
 		}
+		return null;
 	}
 
-	void readNumber(Scanner in) throws APException {
-		while (!nextCharIs(in, ' ')) {// Zolang er nog een cijfer is.
-			readDigit(in);
+	NaturalNumber readNumber(Scanner in) throws APException {
+		trimSpace(in);
+		NaturalNumber n = new NaturalNumber();
+		while (!nextCharIs(in, ' ') && !nextCharIs(in, '}')) {// Zolang er nog
+																// een cijfer
+																// is.
+			n.addDigit(readDigit(in));
 		}
+		return null;
 	}
 
 	char readDigit(Scanner in) throws APException {
@@ -129,7 +140,6 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("*".matches("[+-//|]") ? "succes" : "fail");
 
 		// new Main().run();
 	}

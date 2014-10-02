@@ -1,7 +1,7 @@
 package assignment2;
 
 public class NaturalNumber implements NaturalNumberInterface {
-	
+
 	private char[] naturalNumber;
 	private int nextIndex;
 
@@ -12,6 +12,15 @@ public class NaturalNumber implements NaturalNumberInterface {
 
 	public NaturalNumber(char digit) throws APException {
 		init(digit);
+	}
+
+	@Override
+	public String toString() {
+		String s = "";
+		for (int i = 0; i < nextIndex; i++) {
+			s += naturalNumber[i];
+		}
+		return s;
 	}
 
 	@Override

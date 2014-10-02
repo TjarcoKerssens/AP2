@@ -10,7 +10,13 @@ public class DataTable<I extends Data, D extends Clonable> implements
 
 	@Override
 	public void store(I identifier, D data) {
-		list.insert(new IdentifierValue<I, D>(identifier, data));
+		IdentifierValue<I, D> i = new IdentifierValue<I, D>(identifier, data);
+		if (!list.find(i)) {
+			list.insert(new IdentifierValue<I, D>(identifier, data));
+		} else {
+			list.retrieve().setData(data);
+		}
+
 	}
 
 	@Override
@@ -58,7 +64,8 @@ public class DataTable<I extends Data, D extends Clonable> implements
 
 		@Override
 		public int compareTo(Object o) {
-			return identifier.compareTo(o);
+			IdentifierValue<I2, D2> i = (IdentifierValue<I2, D2>) o;
+			return identifier.compareTo(i.getIdentifier());
 		}
 
 		@SuppressWarnings("unchecked")

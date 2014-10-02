@@ -45,7 +45,9 @@ public class SortedList<E extends Data> extends List<E> implements
 	}
 
 	public boolean find(E d) {
-
+		if(list == null)
+			return false;
+		
 		if (list.data.compareTo(d) == 0) {
 			return true;
 
