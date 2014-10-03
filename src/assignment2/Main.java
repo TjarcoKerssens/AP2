@@ -115,9 +115,9 @@ public class Main {
 				System.out.print(c);
 			}
 			data.removeElement(number);
-			if (!data.isEmpty())
-				System.out.print(" ");
+			System.out.print(" ");
 		}
+		System.out.println("");
 	}
 
 	void procesComment(Scanner in) {
@@ -197,6 +197,8 @@ public class Main {
 
 	DataSet<NaturalNumber> readSet(Scanner in) throws APException {
 		character(in, '{');
+		trimWhiteSpace(in);
+
 		DataSet<NaturalNumber> set = new DataSet<>();
 		while (!nextCharIs(in, '}')) {
 			set.addElement(readNumber(in));
@@ -214,6 +216,11 @@ public class Main {
 		while (!nextCharIs(in, '}') && !nextCharIs(in, ',')) {
 			n.addDigit(readDigit(in));
 			trimWhiteSpace(in);
+			if (!nextCharIs(in, '}') && !nextCharIs(in, ',')
+					&& !nextCharIsDigit(in)) {
+				throw new APException("No spaces in elements allowed, at line "
+						+ lineCount);
+			}
 			readAnyDigits = true;
 		}
 		if (!readAnyDigits) {
