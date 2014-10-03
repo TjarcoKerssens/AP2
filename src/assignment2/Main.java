@@ -211,7 +211,7 @@ char character(Scanner in, char c) throws APException {
 
 		NaturalNumber n = new NaturalNumber();
 		// As long as there is a digit left
-		while (nextCharIsDigit(in)) {
+		while (!nextCharIs(in, '}') && !nextCharIs(in, ',')) {
 			n.addDigit(readDigit(in));
 		}
 		trimWhiteSpace(in);
@@ -223,8 +223,8 @@ char character(Scanner in, char c) throws APException {
 
 	char readDigit(Scanner in) throws APException {
 		if (!nextCharIsDigit(in)) {
-			throw new APException("not a digit: " + in.next().charAt(0)
-					+ " on line " + lineCount);
+			throw new APException("not a digit: '" + in.next().charAt(0)
+					+ "', on line " + lineCount);
 		}
 		return in.next().charAt(0);
 	}
