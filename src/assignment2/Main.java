@@ -108,7 +108,6 @@ public class Main {
 		trimWhiteSpace(in);
 		DataSet<NaturalNumber> data = readExpression(in);
 		data = data.clone();
-		System.out.print("{");
 		while (!data.isEmpty()) {
 			NaturalNumber number = data.getElement();
 			char[] digits = number.getAllDigits();
@@ -117,9 +116,8 @@ public class Main {
 			}
 			data.removeElement(number);
 			if (!data.isEmpty())
-				System.out.print(", ");
+				System.out.print(" ");
 		}
-		System.out.println("}");
 	}
 
 	void procesComment(Scanner in) {
@@ -215,6 +213,7 @@ public class Main {
 		// As long as there is a digit left
 		while (!nextCharIs(in, '}') && !nextCharIs(in, ',')) {
 			n.addDigit(readDigit(in));
+			trimWhiteSpace(in);
 			readAnyDigits = true;
 		}
 		if (!readAnyDigits) {
@@ -224,6 +223,10 @@ public class Main {
 		trimWhiteSpace(in);
 		if (!nextCharIs(in, '}')) {
 			character(in, ',');
+			if (nextCharIs(in, '}')) {
+				throw new APException(
+						"Empty elements are not allowed, at line " + lineCount);
+			}
 		}
 		return n;
 	}
@@ -239,7 +242,6 @@ public class Main {
 	public static void main(String[] args) {
 		String path = args[0];
 		new Main().run(path);
-
 	}
 
 }
