@@ -83,6 +83,8 @@ char character(Scanner in, char c) throws APException {
 			procesComment(in);
 		} else if (!in.hasNext()) {
 			throw new APException("Empty line detected on line " + lineCount);
+		}else{
+			throw new APException("Invallid start of a statement: '" + in.next() + "' on line " + lineCount);
 		}
 	}
 
