@@ -28,9 +28,9 @@ public class NaturalNumber implements NaturalNumberInterface {
 
 	@Override
 	public boolean init(char digit) throws APException {
+
 		naturalNumber = new char[1];
 		addDigit(digit);
-
 		return true;
 	}
 
@@ -38,15 +38,8 @@ public class NaturalNumber implements NaturalNumberInterface {
 	public void addDigit(char digit) throws APException {
 
 		if (isNumeric(digit)) {
-			if (nextIndex == naturalNumber.length) {
-				char[] temp = naturalNumber;
-				naturalNumber = new char[temp.length * 2];
-				for (int i = 0; i < temp.length; i++) {
-					naturalNumber[i] = temp[i];
-				}
-			}
-			naturalNumber[nextIndex] = digit;
-			nextIndex++;
+			arrayLenghtCheck();
+			zeroTrim(digit);
 		} else {
 			throw new APException("Number '" + digit + "'is not numeric.");
 		}
@@ -72,12 +65,12 @@ public class NaturalNumber implements NaturalNumberInterface {
 	}
 
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Object number) {
 
-		NaturalNumber compare = ((NaturalNumber) o);
+		NaturalNumber compare = ((NaturalNumber) number);
 
 		if (compare.nextIndex != this.nextIndex) {
-			return this.nextIndex - compare.nextIndex;
+			return compare.nextIndex - this.nextIndex;
 		}
 		for (int i = 0; i < this.nextIndex; i++) {
 			try {
@@ -107,4 +100,23 @@ public class NaturalNumber implements NaturalNumberInterface {
 		return Character.isDigit(digit);
 	}
 
+	public void zeroTrim(char digit) {
+		
+		if(naturalNumber[0] == '0' && nextIndex == 1) {
+			naturalNumber[0] = digit;
+		} else {
+			naturalNumber[nextIndex] = digit;
+			nextIndex++;
+		}
+	}
+	
+	private void arrayLenghtCheck() {
+		if (nextIndex == naturalNumber.length) {
+			char[] temp = naturalNumber;
+			naturalNumber = new char[temp.length * 2];
+			for (int i = 0; i < temp.length; i++) {
+				naturalNumber[i] = temp[i];
+			}
+		}
+	}
 }
