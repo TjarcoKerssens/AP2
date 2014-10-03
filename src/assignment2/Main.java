@@ -59,14 +59,14 @@ public class Main {
 		}
 	}
 
-char character(Scanner in, char c) throws APException {
+	char character(Scanner in, char c) throws APException {
 		if (!nextCharIs(in, c)) {
 			if (in.hasNext()) {
 				throw new APException("Unexpected character: '" + in.next()
 						+ "' ,expected '" + c + "' on line " + lineCount);
 			} else {
-				throw new APException("Unexpected end of line, expected '"
-						+ c + "' on line " + lineCount);
+				throw new APException("Unexpected end of line, expected '" + c
+						+ "' on line " + lineCount);
 			}
 		}
 
@@ -83,8 +83,9 @@ char character(Scanner in, char c) throws APException {
 			procesComment(in);
 		} else if (!in.hasNext()) {
 			throw new APException("Empty line detected on line " + lineCount);
-		}else{
-			throw new APException("Invallid start of a statement: '" + in.next() + "' on line " + lineCount);
+		} else {
+			throw new APException("Invallid start of a statement: '"
+					+ in.next() + "' on line " + lineCount);
 		}
 	}
 
@@ -95,7 +96,7 @@ char character(Scanner in, char c) throws APException {
 		trimWhiteSpace(in);
 		DataSet<NaturalNumber> set = readExpression(in);
 		if (in.hasNext()) {
-			in.useDelimiter("\\z"); 
+			in.useDelimiter("\\z");
 			throw new APException("Unexpected input: '" + in.next() + "'"
 					+ " on line " + lineCount);
 		}
@@ -232,6 +233,8 @@ char character(Scanner in, char c) throws APException {
 	public static void main(String[] args) {
 		String path = args[0];
 		new Main().run(path);
+
+
 	}
 
 }

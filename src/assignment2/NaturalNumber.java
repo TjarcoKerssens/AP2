@@ -6,8 +6,11 @@ public class NaturalNumber implements NaturalNumberInterface {
 	private int nextIndex;
 
 	public NaturalNumber() {
-		naturalNumber = new char[1];
-		naturalNumber[0] = '0';
+		try{
+			init('0');
+		}catch(APException ex){
+			//Will never happen
+		}
 	}
 
 	public NaturalNumber(char digit) throws APException {
