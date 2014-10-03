@@ -179,6 +179,9 @@ public class Main {
 			set = readComplexFactor(in);
 		} else if (nextCharIs(in, '{')) {
 			set = readSet(in);
+		} else if (!in.hasNext()) {
+			throw new APException("No expression specified, at line "
+					+ lineCount);
 		} else {
 			throw new APException("Invalid character for start of factor: '"
 					+ in.next() + "'" + " on line " + lineCount);
