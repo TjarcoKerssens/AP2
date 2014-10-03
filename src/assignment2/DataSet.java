@@ -15,6 +15,11 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 
 	@Override
 	public E getElement() {
+		int index = (int) (Math.random() * dataSet.size());
+		dataSet.setFirst();
+		for (; index > 0; index--) {
+			dataSet.getNext();
+		}
 		return dataSet.retrieve();
 	}
 
