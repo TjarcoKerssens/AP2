@@ -59,13 +59,7 @@ public class Main {
 		}
 	}
 
-	private void trimSpaceCharacter(Scanner in) {
-		while (in.hasNext(" ")) {
-			in.next();
-		}
-	}
-
-	char character(Scanner in, char c) throws APException {
+char character(Scanner in, char c) throws APException {
 		if (!nextCharIs(in, c)) {
 			if (in.hasNext()) {
 				throw new APException("Unexpected character: '" + in.next()
@@ -94,11 +88,12 @@ public class Main {
 
 	void readAssignment(Scanner in) throws APException {
 		Identifier identifier = readIdentifier(in);
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 		character(in, '=');
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 		DataSet<NaturalNumber> set = readExpression(in);
 		if (in.hasNext()) {
+			in.useDelimiter("\\z"); 
 			throw new APException("Unexpected input: '" + in.next() + "'"
 					+ " on line " + lineCount);
 		}
@@ -107,7 +102,7 @@ public class Main {
 
 	void readPrintStatement(Scanner in) throws APException {
 		character(in, '?');
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 		DataSet<NaturalNumber> data = readExpression(in);
 		data = data.clone();
 		System.out.print("{");
@@ -139,42 +134,42 @@ public class Main {
 
 	DataSet<NaturalNumber> readExpression(Scanner in) throws APException {
 		DataSet<NaturalNumber> set = readTerm(in);
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 		while (nextCharIsAdditiveOperator(in)) {
 			char operator = in.next().charAt(0);
 			switch (operator) {
 			case '+':
-				trimSpaceCharacter(in);
+				trimWhiteSpace(in);
 				set = (DataSet<NaturalNumber>) set.union(readTerm(in));
 				break;
 			case '|':
-				trimSpaceCharacter(in);
+				trimWhiteSpace(in);
 				set = (DataSet<NaturalNumber>) set
 						.symmetricDifference(readTerm(in));
 				break;
 			case '-':
-				trimSpaceCharacter(in);
+				trimWhiteSpace(in);
 				set = (DataSet<NaturalNumber>) set.difference(readTerm(in));
 				break;
 			}
-			trimSpaceCharacter(in);
+			trimWhiteSpace(in);
 		}
 		return set;
 	}
 
 	DataSet<NaturalNumber> readTerm(Scanner in) throws APException {
 		DataSet<NaturalNumber> set = readFactor(in);
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 		while (nextCharIsMultiplicativeOperator(in)) {
 			in.next();
 			set = (DataSet<NaturalNumber>) set.intersection(readFactor(in));
-			trimSpaceCharacter(in);
+			trimWhiteSpace(in);
 		}
 		return set;
 	}
 
 	DataSet<NaturalNumber> readFactor(Scanner in) throws APException {
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 		DataSet<NaturalNumber> set = null;
 		if (nextCharIsLetter(in)) {
 			Identifier id = readIdentifier(in);
@@ -210,14 +205,14 @@ public class Main {
 	}
 
 	NaturalNumber readNumber(Scanner in) throws APException {
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 
 		NaturalNumber n = new NaturalNumber();
 		// As long as there is a digit left
 		while (nextCharIsDigit(in)) {
 			n.addDigit(readDigit(in));
 		}
-		trimSpaceCharacter(in);
+		trimWhiteSpace(in);
 		if (!nextCharIs(in, '}')) {
 			character(in, ',');
 		}
