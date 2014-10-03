@@ -52,7 +52,11 @@ public class NaturalNumber implements NaturalNumberInterface {
 
 	@Override
 	public char[] getAllDigits() {
-		return naturalNumber;
+		char[] temp = new char[nextIndex];
+		for (int i = 0; i < temp.length; i++) {
+			temp[i] = naturalNumber[i];
+		}
+		return temp;
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package assignment2;
 
 public class DataSet<E extends Data> implements DataSetInterface<E> {
-	
+
 	SortedList<E> dataSet;
-	
+
 	public DataSet() {
 		init();
 	}
@@ -17,15 +17,15 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 	public E getElement() {
 		return dataSet.retrieve();
 	}
-	
+
 	@Override
 	public void addElement(E Element) {
-		dataSet.insert(Element);	
+		dataSet.insert(Element);
 	}
 
 	@Override
 	public boolean removeElement(E element) {
-		
+
 		if (dataSet.find(element)) {
 			dataSet.remove();
 			return true;
@@ -42,13 +42,13 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 	public boolean isEmpty() {
 		return dataSet.isEmpty();
 	}
-	
-	public  DataSet<E> clone() {
-		
+
+	public DataSet<E> clone() {
+
 		DataSet<E> clone = new DataSet<E>();
 		this.dataSet.setFirst();
 		Node<E> list = this.dataSet.list;
-		
+
 		for (int i = 0; i < this.dataSet.size(); i++) {
 			clone.dataSet.insert(list.data);
 			list = list.next;
@@ -58,12 +58,12 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 
 	@Override
 	public DataSetInterface<E> difference(DataSetInterface<E> set) {
-		
+
 		DataSetInterface<E> firstSet = clone();
 		DataSetInterface<E> resultSet = new DataSet<E>();
-		
+
 		while (!firstSet.isEmpty()) {
-			
+
 			E element = firstSet.getElement();
 			if (!set.contains(element)) {
 				resultSet.addElement(element);
@@ -75,13 +75,13 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 
 	@Override
 	public DataSetInterface<E> intersection(DataSetInterface<E> set) {
-		
+
 		DataSetInterface<E> firstSet = clone();
 		DataSetInterface<E> resultSet = new DataSet<E>();
-		
-		while(!firstSet.isEmpty()) {
+
+		while (!firstSet.isEmpty()) {
 			E element = firstSet.getElement();
-			if(set.contains(element)) {
+			if (set.contains(element)) {
 				resultSet.addElement(element);
 			}
 			firstSet.removeElement(element);
@@ -91,10 +91,10 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 
 	@Override
 	public DataSetInterface<E> union(DataSetInterface<E> set) {
-		
+
 		DataSetInterface<E> secondSet = set.clone();
 		DataSetInterface<E> resultSet = clone();
-		
+
 		while (!secondSet.isEmpty()) {
 			E element = secondSet.getElement();
 			if (!resultSet.contains(element)) {
@@ -107,13 +107,13 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 
 	@Override
 	public DataSetInterface<E> symmetricDifference(DataSetInterface<E> set) {
-		
+
 		DataSetInterface<E> resultSet = this.union(set);
 		DataSetInterface<E> intersectionSet = this.intersection(set);
-		
-		while(!intersectionSet.isEmpty()) {
+
+		while (!intersectionSet.isEmpty()) {
 			E element = intersectionSet.getElement();
-			if(resultSet.contains(element)) {
+			if (resultSet.contains(element)) {
 				resultSet.removeElement(element);
 			}
 			intersectionSet.removeElement(element);

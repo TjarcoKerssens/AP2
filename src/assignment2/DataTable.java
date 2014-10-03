@@ -22,7 +22,7 @@ public class DataTable<I extends Data, D extends Clonable> implements
 	@Override
 	public D lookUp(I identifier) throws APException {
 		if (!list.find(new IdentifierValue<I, D>(identifier, null))) {
-			throw new APException("No entry for given identifier" + identifier);
+			throw new APException("No entry for given identifier: " + identifier);
 		}
 		return list.retrieve().getData();
 	}

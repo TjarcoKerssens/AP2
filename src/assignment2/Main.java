@@ -6,21 +6,26 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
-	DataTable<Identifier, DataSet<NaturalNumber>> table;
+	private DataTable<Identifier, DataSet<NaturalNumber>> table;
+	private int lineCount;
 
 	void run(String path) {
 		table = new DataTable<>();
 		File f = new File(path);
 		Scanner in;
+		lineCount = 1;
 		try {
 			in = new Scanner(f);
-			in.useDelimiter("");
 			while (in.hasNextLine()) {
+				String row = in.nextLine();
+				Scanner rowScanner = new Scanner(row);
+				rowScanner.useDelimiter("");
 				try {
-					readStatement(in);
+					readStatement(rowScanner);
 				} catch (APException e) {
-					e.printStackTrace();
+					System.err.println(e.getMessage());
 				}
+				lineCount++;
 			}
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -48,47 +53,63 @@ public class Main {
 		return in.hasNext(Pattern.quote("*"));
 	}
 
-	void trimSpace(Scanner in) {
+	void trimWhiteSpace(Scanner in) {
 		while (in.hasNext("\\s")) {
+			in.next();
+		}
+	}
+
+	private void trimSpaceCharacter(Scanner in) {
+		while (in.hasNext(" ")) {
 			in.next();
 		}
 	}
 
 	char character(Scanner in, char c) throws APException {
 		if (!nextCharIs(in, c)) {
-			throw new APException("");
+			if (in.hasNext()) {
+				throw new APException("Unexpected character: '" + in.next()
+						+ "' ,expected '" + c + "' on line " + lineCount);
+			} else {
+				throw new APException("Unexpected end of line, expected '"
+						+ c + "' on line " + lineCount);
+			}
 		}
 
 		return in.next().charAt(0);
 	}
 
 	void readStatement(Scanner in) throws APException {
-		trimSpace(in);
+		trimWhiteSpace(in);
 		if (nextCharIsLetter(in)) {
 			readAssignment(in);
 		} else if (nextCharIs(in, '?')) {
 			readPrintStatement(in);
 		} else if (nextCharIs(in, '/')) {
 			procesComment(in);
-		} else {
-			throw new APException(in.next());
+		} else if (!in.hasNext()) {
+			throw new APException("Empty line detected on line " + lineCount);
 		}
-
 	}
 
 	void readAssignment(Scanner in) throws APException {
 		Identifier identifier = readIdentifier(in);
-		trimSpace(in);
+		trimSpaceCharacter(in);
 		character(in, '=');
-		trimSpace(in);
+		trimSpaceCharacter(in);
 		DataSet<NaturalNumber> set = readExpression(in);
+		if (in.hasNext()) {
+			throw new APException("Unexpected input: '" + in.next() + "'"
+					+ " on line " + lineCount);
+		}
 		table.store(identifier, set);
 	}
 
 	void readPrintStatement(Scanner in) throws APException {
 		character(in, '?');
-		trimSpace(in);
+		trimSpaceCharacter(in);
 		DataSet<NaturalNumber> data = readExpression(in);
+		data = data.clone();
 		System.out.print("{");
 		while (!data.isEmpty()) {
 			NaturalNumber number = data.getElement();
@@ -109,7 +130,7 @@ public class Main {
 
 	Identifier readIdentifier(Scanner in) throws APException {
 		Identifier identifier = new Identifier(in.next().charAt(0));
-		while (nextCharIsLetter(in)) {
+		while (nextCharIsLetter(in) || nextCharIsDigit(in)) {
 			identifier.addCharacter(in.next().charAt(0));
 		}
 
@@ -118,33 +139,63 @@ public class Main {
 
 	DataSet<NaturalNumber> readExpression(Scanner in) throws APException {
 		DataSet<NaturalNumber> set = readTerm(in);
+		trimSpaceCharacter(in);
 		while (nextCharIsAdditiveOperator(in)) {
-			readTerm(in);
+			char operator = in.next().charAt(0);
+			switch (operator) {
+			case '+':
+				trimSpaceCharacter(in);
+				set = (DataSet<NaturalNumber>) set.union(readTerm(in));
+				break;
+			case '|':
+				trimSpaceCharacter(in);
+				set = (DataSet<NaturalNumber>) set
+						.symmetricDifference(readTerm(in));
+				break;
+			case '-':
+				trimSpaceCharacter(in);
+				set = (DataSet<NaturalNumber>) set.difference(readTerm(in));
+				break;
+			}
+			trimSpaceCharacter(in);
 		}
 		return set;
 	}
 
 	DataSet<NaturalNumber> readTerm(Scanner in) throws APException {
 		DataSet<NaturalNumber> set = readFactor(in);
-
+		trimSpaceCharacter(in);
 		while (nextCharIsMultiplicativeOperator(in)) {
-			readFactor(in);
+			in.next();
+			set = (DataSet<NaturalNumber>) set.intersection(readFactor(in));
+			trimSpaceCharacter(in);
 		}
 		return set;
 	}
 
 	DataSet<NaturalNumber> readFactor(Scanner in) throws APException {
+		trimSpaceCharacter(in);
 		DataSet<NaturalNumber> set = null;
 		if (nextCharIsLetter(in)) {
 			Identifier id = readIdentifier(in);
 			set = table.lookUp(id);
 		} else if (nextCharIs(in, '(')) {
-			in.next();
-			set = readExpression(in); // readComplexFactor()
-			character(in, ')');
+			set = readComplexFactor(in);
 		} else if (nextCharIs(in, '{')) {
 			set = readSet(in);
+		} else {
+			throw new APException("Invalid character for start of factor: '"
+					+ in.next() + "'" + " on line " + lineCount);
 		}
+		return set;
+	}
+
+	private DataSet<NaturalNumber> readComplexFactor(Scanner in)
+			throws APException {
+		DataSet<NaturalNumber> set;
+		in.next();
+		set = readExpression(in);
+		character(in, ')');
 		return set;
 	}
 
@@ -159,13 +210,14 @@ public class Main {
 	}
 
 	NaturalNumber readNumber(Scanner in) throws APException {
-		trimSpace(in);
+		trimSpaceCharacter(in);
+
 		NaturalNumber n = new NaturalNumber();
 		// As long as there is a digit left
 		while (nextCharIsDigit(in)) {
 			n.addDigit(readDigit(in));
 		}
-		trimSpace(in);
+		trimSpaceCharacter(in);
 		if (!nextCharIs(in, '}')) {
 			character(in, ',');
 		}
@@ -174,7 +226,8 @@ public class Main {
 
 	char readDigit(Scanner in) throws APException {
 		if (!nextCharIsDigit(in)) {
-			throw new APException("not a digit: " + in.next().charAt(0));
+			throw new APException("not a digit: " + in.next().charAt(0)
+					+ " on line " + lineCount);
 		}
 		return in.next().charAt(0);
 	}
@@ -182,7 +235,6 @@ public class Main {
 	public static void main(String[] args) {
 		String path = args[0];
 		new Main().run(path);
-
 	}
 
 }
