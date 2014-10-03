@@ -28,7 +28,6 @@ public class NaturalNumber implements NaturalNumberInterface {
 
 	@Override
 	public boolean init(char digit) throws APException {
-
 		naturalNumber = new char[1];
 		addDigit(digit);
 

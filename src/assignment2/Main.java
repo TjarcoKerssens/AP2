@@ -211,9 +211,15 @@ public class Main {
 		trimWhiteSpace(in);
 
 		NaturalNumber n = new NaturalNumber();
+		boolean readAnyDigits = false;
 		// As long as there is a digit left
 		while (!nextCharIs(in, '}') && !nextCharIs(in, ',')) {
 			n.addDigit(readDigit(in));
+			readAnyDigits = true;
+		}
+		if (!readAnyDigits) {
+			throw new APException("Empty elements are not allowed, at line "
+					+ lineCount);
 		}
 		trimWhiteSpace(in);
 		if (!nextCharIs(in, '}')) {
@@ -233,7 +239,6 @@ public class Main {
 	public static void main(String[] args) {
 		String path = args[0];
 		new Main().run(path);
-
 
 	}
 
