@@ -32,34 +32,38 @@ public class Main {
 		}
 	}
 
-	boolean nextCharIs(Scanner in, char c) {
+	private boolean nextCharIs(Scanner in, char c) {
 		return in.hasNext(Pattern.quote(c + ""));
 	}
 
-	boolean nextCharIsLetter(Scanner in) {
+	private boolean nextCharIsLetter(Scanner in) {
 		return in.hasNext(Pattern.compile("[A-Za-z]"));
 	}
 
-	boolean nextCharIsDigit(Scanner in) {
+	private boolean nextCharIsDigit(Scanner in) {
 		return in.hasNext(Pattern.compile("[0-9]"));
 
 	}
 
-	boolean nextCharIsAdditiveOperator(Scanner in) {
+	private boolean nextCharIsAdditiveOperator(Scanner in) {
 		return in.hasNext(Pattern.compile("[+-//|]"));
 	}
 
-	boolean nextCharIsMultiplicativeOperator(Scanner in) {
+	private boolean nextCharIsMultiplicativeOperator(Scanner in) {
 		return in.hasNext(Pattern.quote("*"));
 	}
+	
+	private boolean nextCharIsReservedKeyWord(Scanner in){
+		return in.hasNext("[\\s+-//*=//|]");
+	}
 
-	void trimWhiteSpace(Scanner in) {
+	private void trimWhiteSpace(Scanner in) {
 		while (in.hasNext("\\s")) {
 			in.next();
 		}
 	}
 
-	char character(Scanner in, char c) throws APException {
+	private char character(Scanner in, char c) throws APException {
 		if (!nextCharIs(in, c)) {
 			if (in.hasNext()) {
 				throw new APException("Unexpected character: '" + in.next()
@@ -73,7 +77,7 @@ public class Main {
 		return in.next().charAt(0);
 	}
 
-	void readStatement(Scanner in) throws APException {
+	private void readStatement(Scanner in) throws APException {
 		trimWhiteSpace(in);
 		if (nextCharIsLetter(in)) {
 			readAssignment(in);
@@ -89,7 +93,7 @@ public class Main {
 		}
 	}
 
-	void readAssignment(Scanner in) throws APException {
+	private void readAssignment(Scanner in) throws APException {
 		Identifier identifier = readIdentifier(in);
 		trimWhiteSpace(in);
 		character(in, '=');
@@ -103,7 +107,7 @@ public class Main {
 		table.store(identifier, set);
 	}
 
-	void readPrintStatement(Scanner in) throws APException {
+	private void readPrintStatement(Scanner in) throws APException {
 		character(in, '?');
 		trimWhiteSpace(in);
 		DataSet<NaturalNumber> data = readExpression(in);
@@ -120,20 +124,20 @@ public class Main {
 		System.out.println("");
 	}
 
-	void procesComment(Scanner in) {
+	private void procesComment(Scanner in) {
 		in.nextLine();
 	}
 
-	Identifier readIdentifier(Scanner in) throws APException {
+	private Identifier readIdentifier(Scanner in) throws APException {
 		Identifier identifier = new Identifier(in.next().charAt(0));
-		while (nextCharIsLetter(in) || nextCharIsDigit(in)) {
+		while (!nextCharIsReservedKeyWord(in) && in.hasNext()) {
 			identifier.addCharacter(in.next().charAt(0));
 		}
 
 		return identifier;
 	}
 
-	DataSet<NaturalNumber> readExpression(Scanner in) throws APException {
+	private DataSet<NaturalNumber> readExpression(Scanner in) throws APException {
 		DataSet<NaturalNumber> set = readTerm(in);
 		trimWhiteSpace(in);
 		while (nextCharIsAdditiveOperator(in)) {
@@ -158,7 +162,7 @@ public class Main {
 		return set;
 	}
 
-	DataSet<NaturalNumber> readTerm(Scanner in) throws APException {
+	private DataSet<NaturalNumber> readTerm(Scanner in) throws APException {
 		DataSet<NaturalNumber> set = readFactor(in);
 		trimWhiteSpace(in);
 		while (nextCharIsMultiplicativeOperator(in)) {
@@ -169,7 +173,7 @@ public class Main {
 		return set;
 	}
 
-	DataSet<NaturalNumber> readFactor(Scanner in) throws APException {
+	private DataSet<NaturalNumber> readFactor(Scanner in) throws APException {
 		trimWhiteSpace(in);
 		DataSet<NaturalNumber> set = null;
 		if (nextCharIsLetter(in)) {
@@ -196,9 +200,9 @@ public class Main {
 		set = readExpression(in);
 		character(in, ')');
 		return set;
-	}
+	} 
 
-	DataSet<NaturalNumber> readSet(Scanner in) throws APException {
+	private DataSet<NaturalNumber> readSet(Scanner in) throws APException {
 		character(in, '{');
 		trimWhiteSpace(in);
 
@@ -210,7 +214,7 @@ public class Main {
 		return set;
 	}
 
-	NaturalNumber readNumber(Scanner in) throws APException {
+	private NaturalNumber readNumber(Scanner in) throws APException {
 		trimWhiteSpace(in);
 
 		NaturalNumber n = new NaturalNumber();
@@ -241,7 +245,7 @@ public class Main {
 		return n;
 	}
 
-	char readDigit(Scanner in) throws APException {
+	private char readDigit(Scanner in) throws APException {
 		if (!nextCharIsDigit(in)) {
 			throw new APException("not a digit: '" + in.next().charAt(0)
 					+ "', on line " + lineCount);
