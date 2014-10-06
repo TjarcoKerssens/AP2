@@ -23,18 +23,22 @@ public class Identifier implements IdentifierInterface {
 	@Override
 	public void addCharacter(char character) throws APException {
 		if (isAlpaNumeric(character)) {
-			if (nextIndex == characterSet.length) {
-				char[] temp = characterSet;
-				characterSet = new char[temp.length * 2];
-				for (int i = 0; i < temp.length; i++) {
-					characterSet[i] = temp[i];
-				}
-			}
+			arrayLengthCheck();
 			characterSet[nextIndex] = character;
 			nextIndex++;
 		} else {
 			throw new APException("Character '" + character
 					+ "' is not Alphanummeric");
+		}
+	}
+
+	private void arrayLengthCheck() {
+		if (nextIndex == characterSet.length) {
+			char[] temp = characterSet;
+			characterSet = new char[temp.length * 2];
+			for (int i = 0; i < temp.length; i++) {
+				characterSet[i] = temp[i];
+			}
 		}
 	}
 
@@ -75,7 +79,6 @@ public class Identifier implements IdentifierInterface {
 	public Identifier clone() {
 
 		Identifier clone = null;
-
 		try {
 			clone = new Identifier(this.getCharacter(0));
 		} catch (APException e) {
@@ -103,11 +106,9 @@ public class Identifier implements IdentifierInterface {
 	public int compareTo(Object o) {
 
 		Identifier compare = ((Identifier) o);
-
 		if (compare.nextIndex != this.nextIndex) {
 			return this.nextIndex - compare.nextIndex;
 		}
-
 		for (int i = 0; i < this.nextIndex; i++) {
 			if (!(compare.getCharacter(i) == this.getCharacter(i))) {
 				return this.getCharacter(i) - compare.getCharacter(i);
