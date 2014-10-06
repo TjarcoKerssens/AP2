@@ -32,15 +32,15 @@ public class SortedList<E extends Data> extends List<E> implements
 		return this;
 	}
 
-	public void insertFirst(E d) {
+	private void insertFirst(E d) {
 		list = list.prior = new Node<E>(d, null, list);
 	}
 
-	public void insertLast(E d) {
+	private void insertLast(E d) {
 		list = list.next = new Node<E>(d, list, null);
 	}
 
-	public void insertInOrder(E d) {
+	private void insertInOrder(E d) {
 		list = list.next = list.next.prior = new Node<E>(d, list, list.next);
 	}
 

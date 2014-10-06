@@ -21,7 +21,8 @@ package assignment2;
 public interface IdentifierInterface extends Data {
 
 	/**
-	 * Initialization of data input
+	 * Initialization of data input, first character array position is initialized with the first character
+	 * of the identifier if it's a letter
 	 * 
 	 * @throws APException
 	 *             if the character is not a letter
@@ -32,12 +33,13 @@ public interface IdentifierInterface extends Data {
 	void init(char character) throws APException;
 
 	/**
-	 * Add a character to the identifier
+	 * Add a character to the identifier, double the length of the character array if
+	 * the the array limit has been met
 	 * 
 	 * @param character
 	 * @throws IllegalFormatException
 	 *             if the character is not alphanumeric
-	 * @postcondition The identifier is put into the Identifier
+	 * @postcondition The character is added to the Identifier
 	 */
 	void addCharacter(char character) throws APException;
 

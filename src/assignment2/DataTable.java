@@ -16,7 +16,6 @@ public class DataTable<I extends Data, D extends Clonable> implements
 		} else {
 			list.retrieve().setData(data);
 		}
-
 	}
 
 	@Override

@@ -28,7 +28,10 @@ public class NaturalNumber implements NaturalNumberInterface {
 
 	@Override
 	public boolean init(char digit) throws APException {
-
+		
+		if (!isNumeric(digit)) {
+			return false;
+		}
 		naturalNumber = new char[1];
 		addDigit(digit);
 		return true;
@@ -39,7 +42,7 @@ public class NaturalNumber implements NaturalNumberInterface {
 
 		if (isNumeric(digit)) {
 			arrayLenghtCheck();
-			zeroTrim(digit);
+			zeroReplace(digit);
 		} else {
 			throw new APException("Number '" + digit + "'is not numeric.");
 		}
@@ -100,7 +103,7 @@ public class NaturalNumber implements NaturalNumberInterface {
 		return Character.isDigit(digit);
 	}
 
-	public void zeroTrim(char digit) {
+	private void zeroReplace(char digit) {
 		
 		if(naturalNumber[0] == '0' && nextIndex == 1) {
 			naturalNumber[0] = digit;

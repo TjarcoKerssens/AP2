@@ -27,7 +27,7 @@ public interface NaturalNumberInterface extends Data {
 	 * @param digit
 	 *            The character wich represents the digit
 	 * @throws APException 
-	 * @precondition all characters are digits
+	 * @precondition all characters are digits (?)
 	 * @postcondition The NaturalNumber is initialized with the digit
 	 *                given.<br>
 	 *                return true if successful<br>
@@ -37,7 +37,10 @@ public interface NaturalNumberInterface extends Data {
 	boolean init(char digit) throws APException;
 
 	/**
-	 * Adds a new digit to the NaturalNumber
+	 * Adds a new digit to the NaturalNumber, doubles length of the 
+	 * natural number array if upper limit has been reached, checks
+	 * if the first digit is zero, if so replaces it with the parameter
+	 * digit
 	 * 
 	 * @param digit
 	 *            the digit to be added
@@ -49,6 +52,8 @@ public interface NaturalNumberInterface extends Data {
 	void addDigit(char digit) throws APException;
 
 	/**
+	 * Return this NaturalNumber as an character array
+	 * 
 	 * @return All digits of the NaturalNumber
 	 * @precondition -
 	 * @postcondition A copy of the characters is returned
@@ -56,6 +61,7 @@ public interface NaturalNumberInterface extends Data {
 	char[] getAllDigits();
 	
 	/**
+	 * Return the digit at the specified index as an character
 	 * 
 	 * @param position The index of the digit to be returned
 	 * @precondition -

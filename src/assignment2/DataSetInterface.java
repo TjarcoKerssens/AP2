@@ -49,12 +49,13 @@ public interface DataSetInterface<E extends Data> extends Clonable {
 	 *            to be removed
 	 * @precondition -
 	 * @postcondition returned:<br>
-	 *                <i>true:</i>If the element could be found and is removed<br>
+	 *                <i>true:</i>The element is found and removed from the set<br>
 	 *                <i>false:</i>If this set does not contain the element
 	 */
 	boolean removeElement(E element);
 
 	/**
+	 * Check whether the set contains the element in the parameter
 	 * 
 	 * @param element
 	 * @precondition -
@@ -65,6 +66,8 @@ public interface DataSetInterface<E extends Data> extends Clonable {
 	boolean contains(E element);
 
 	/**
+	 * Check whether the set is empty or not, return corresponding boolean value
+	 * 
 	 * @precondition -
 	 * @postcondition returned: <br>
 	 *                <i>true: </i> if the set is empty <br>
@@ -73,6 +76,8 @@ public interface DataSetInterface<E extends Data> extends Clonable {
 	boolean isEmpty();
 
 	/**
+	 * Clone/deep-copy this set
+	 * 
 	 * @precondition -
 	 * @postcondition An exact clone of this set is returned, containing all the
 	 *                elements which are also present in this set

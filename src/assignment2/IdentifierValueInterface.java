@@ -5,6 +5,7 @@ package assignment2;
  * @elements Objects
  * @domain Two Objects which form a relation
  * @structure none
+ * 
  * @constructor IdentifierValue(I identifier,
  *              D data);
  * @precondition: -
