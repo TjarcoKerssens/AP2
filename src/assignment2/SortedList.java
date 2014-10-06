@@ -44,6 +44,7 @@ public class SortedList<E extends Data> extends List<E> implements
 		list = list.next = list.next.prior = new Node<E>(d, list, list.next);
 	}
 
+	@Override
 	public boolean find(E d) {
 		if(list == null)
 			return false;

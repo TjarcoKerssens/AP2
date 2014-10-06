@@ -230,6 +230,12 @@ public class Main {
 			}
 			readAnyDigits = true;
 		}
+		testForEmptyElement(in, readAnyDigits);
+		return n;
+	}
+
+	private void testForEmptyElement(Scanner in, boolean readAnyDigits)
+			throws APException {
 		if (!readAnyDigits) {
 			throw new APException("Empty elements are not allowed, at line "
 					+ lineCount);
@@ -242,7 +248,6 @@ public class Main {
 						"Empty elements are not allowed, at line " + lineCount);
 			}
 		}
-		return n;
 	}
 
 	private char readDigit(Scanner in) throws APException {

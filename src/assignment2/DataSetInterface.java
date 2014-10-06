@@ -32,7 +32,7 @@ public interface DataSetInterface<E extends Data> extends Clonable {
 	E getElement();
 
 	/**
-	 * Add an element from the set
+	 * Add an element to the set
 	 * 
 	 * @param element
 	 *            to be added
@@ -92,7 +92,7 @@ public interface DataSetInterface<E extends Data> extends Clonable {
 	 * 
 	 * @param set
 	 * @return The difference between two DataSets
-	 * @precondition The 1st and 2nd DataSet is not null
+	 * @precondition the DataSet is not null
 	 * @postcondition All elements contained in the 1st but not the 2nd
 	 *                DataSet are calculated and returned
 	 * 

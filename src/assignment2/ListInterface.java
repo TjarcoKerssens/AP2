@@ -1,8 +1,8 @@
 package assignment2;
 
-/**	@elementen : objects of type E
- *	@structuur : linear
- *	@domein :	All rows of elements of type E are valid values for a list.
+/**	@elements : objects of type E
+ *	@structure : linear
+ *	@domain :	All rows of elements of type E are valid values for a list.
  *       		For every non-empty list the reference "current" is pointing to an 
  *			element in the list.
  *	@constructor - List ();

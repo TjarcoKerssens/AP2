@@ -2,7 +2,7 @@ package assignment2;
 
 /**
  * 
- * A table which links the Identifiers to the Datasets
+ * A table which links Identifiers to the Datasets
  * 
  * @author Tjarco Kerssens
  * @elements Objects

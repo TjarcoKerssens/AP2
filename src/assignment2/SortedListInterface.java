@@ -23,5 +23,18 @@ public interface SortedListInterface<E extends Data> {
 	 * @postcondition Element e is added to this List at the correct position
 	 */
 	List<E> insert(E e);
+	
+	/**
+	 * Search for an element in the list
+	 * 
+	 * @param e
+	 * @return a boolean wetter the element is found
+	 * @precondition Element e is not null
+	 * @postcondition if the element is found:
+	 * 			<br>true is returned, current element points to found element
+	 * 			<br>if the element is not present in the list
+	 * 			<br>false is returned, current element points to the end of the list
+	 */
+	boolean find(E e);
 
 }
