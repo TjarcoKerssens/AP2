@@ -24,8 +24,13 @@ public class DataSet<E extends Data> implements DataSetInterface<E> {
 	}
 
 	@Override
-	public void addElement(E Element) {
-		dataSet.insert(Element);
+	public boolean addElement(E Element) {
+	
+		if (!contains(Element)) {
+			dataSet.insert(Element);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

@@ -32,15 +32,17 @@ public interface DataSetInterface<E extends Data> extends Clonable {
 	E getElement();
 
 	/**
-	 * Add an element to the set
+	 * Add an element from the set if element is unique
 	 * 
 	 * @param element
 	 *            to be added
 	 * @precondition -
-	 * @postcondition Element is added to the set
+	 * @postcondition true:	Element is added to the set
+	 * 				  false: Set already contained the parameter element, therefore
+	 * 						 was not added
 	 * 
 	 */
-	void addElement(E Element);
+	boolean addElement(E Element);
 	
 	/**
 	 * Remove an element from the set
