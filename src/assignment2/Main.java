@@ -1,7 +1,5 @@
 package assignment2;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -9,27 +7,23 @@ public class Main {
 	private DataTable<Identifier, DataSet<NaturalNumber>> table;
 	private int lineCount;
 
-	void run(String path) {
+	void run() {
 		table = new DataTable<>();
-		File f = new File(path);
-		Scanner in;
 		lineCount = 1;
-		try {
-			in = new Scanner(f);
-			while (in.hasNextLine()) {
-				String row = in.nextLine();
-				Scanner rowScanner = new Scanner(row);
-				rowScanner.useDelimiter("");
-				try {
-					readStatement(rowScanner);
-				} catch (APException e) {
-					System.err.println(e.getMessage());
-				}
-				lineCount++;
+		Scanner in = new Scanner(System.in);
+		while (in.hasNextLine()) {
+			String row = in.nextLine();
+			Scanner rowScanner = new Scanner(row);
+			rowScanner.useDelimiter("");
+			try {
+				readStatement(rowScanner);
+			} catch (APException e) {
+				System.err.println(e.getMessage());
 			}
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			lineCount++;
 		}
+		in.close();
+
 	}
 
 	private boolean nextCharIs(Scanner in, char c) {
@@ -52,9 +46,9 @@ public class Main {
 	private boolean nextCharIsMultiplicativeOperator(Scanner in) {
 		return in.hasNext(Pattern.quote("*"));
 	}
-	
-	private boolean nextCharIsReservedKeyWord(Scanner in){
-		return in.hasNext("[\\s+-//*=//|]");
+
+	private boolean nextCharIsReservedKeyWord(Scanner in) {
+		return in.hasNext("[\\s+-//*=//|)(]");
 	}
 
 	private void trimWhiteSpace(Scanner in) {
@@ -137,7 +131,8 @@ public class Main {
 		return identifier;
 	}
 
-	private DataSet<NaturalNumber> readExpression(Scanner in) throws APException {
+	private DataSet<NaturalNumber> readExpression(Scanner in)
+			throws APException {
 		DataSet<NaturalNumber> set = readTerm(in);
 		trimWhiteSpace(in);
 		while (nextCharIsAdditiveOperator(in)) {
@@ -200,7 +195,7 @@ public class Main {
 		set = readExpression(in);
 		character(in, ')');
 		return set;
-	} 
+	}
 
 	private DataSet<NaturalNumber> readSet(Scanner in) throws APException {
 		character(in, '{');
@@ -222,11 +217,13 @@ public class Main {
 		// As long as there is a digit left
 		while (!nextCharIs(in, '}') && !nextCharIs(in, ',')) {
 			n.addDigit(readDigit(in));
-			trimWhiteSpace(in);
-			if (!nextCharIs(in, '}') && !nextCharIs(in, ',')
-					&& !nextCharIsDigit(in)) {
-				throw new APException("No spaces in elements allowed, at line "
-						+ lineCount);
+			if (in.hasNext("\\s")) {
+				trimWhiteSpace(in);
+				if (nextCharIsDigit(in)) {
+					throw new APException(
+							"No spaces in elements allowed, at line "
+									+ lineCount);
+				}
 			}
 			readAnyDigits = true;
 		}
@@ -259,8 +256,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		String path = args[0];
-		new Main().run(path);
+		new Main().run();
 	}
 
 }
