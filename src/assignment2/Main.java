@@ -18,7 +18,7 @@ public class Main {
 			try {
 				readStatement(rowScanner);
 			} catch (APException e) {
-				System.err.println(e.getMessage());
+				System.out.println(e.getMessage());
 			}
 			lineCount++;
 		}
